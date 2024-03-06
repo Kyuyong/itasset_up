@@ -1,6 +1,6 @@
 import { db } from "../db.js";
 
-
+// Solution 등록 로직
 export const register = (req, res) => {
 
   const q = "SELECT * FROM solutiondata WHERE sol_name = ?"
@@ -27,7 +27,20 @@ export const register = (req, res) => {
       if (err) return res.status(500).json(err);
       return res.status(200).json("Solution이 등록되었습니다.");
     });
-
   });
-
 };
+
+// FileUpload.jsx 파일 업로드 로직 
+export const fileupload = (req, res) => {
+  // console.log(req);
+  const sql = 'INSERT INTO file (`file`,`date`) VALUES (?,?)';
+  // console.log(req.body);
+
+  db.query(sql, [req.body.imgUrl, req.body.date], (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Error saving file path to database');
+    }
+    res.send('File uploaded and path saved to database');
+  });
+}
