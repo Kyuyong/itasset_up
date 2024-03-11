@@ -11,7 +11,7 @@ app.use(express.json());
 // FileUpload.jsx 파일 업로드 로직 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "../client/public/upload");
+    cb(null, "../client/public/upload/solutions");
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + file.originalname);
@@ -20,7 +20,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 app.post("/api/upload", upload.single("file"), function (req, res) {
   const filePath = req.file.path;
-  // console.log(filePath);
+  console.log(filePath);
   // res.status(200).json(file.filename);
   res.status(200).json(filePath);
 });
