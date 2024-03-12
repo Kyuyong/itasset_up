@@ -140,6 +140,19 @@ export const getproduct = (req, res) => {
 }
 
 
+
+// Solutions 세부내역 입력하기
+export const updateSolDesc = (req, res) => {
+  const postId = req.params.id;
+  const q = ``;
+  const values = [req.body.sol_name, req.body.direc, req.body.target, req.body.effect];
+  db.query(q, [...values, postId, userInfo.id], (err, data) => {
+    if (err) return res.status(500).json(err);
+    return res.json("Post has been updated.");
+  });
+};
+
+
 // FileUpload.jsx 파일 업로드 로직 
 export const fileupload = (req, res) => {
   const sql = 'INSERT INTO file (`file`,`date`) VALUES (?,?)';

@@ -1,18 +1,20 @@
 import mysql from "mysql2";
+import 'dotenv/config';
+
 
 
 export const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'rbdyd!@0209',
-  database: 'special'
+  host: process.env.DB_HOST, // 수정됨
+  user: process.env.DB_USER, // 수정됨
+  password: process.env.DB_PASSWORD, // 수정됨
+  database: process.env.DB_NAME // 수정됨
 })
 
 
 
 // export const db = mysql.createConnection({
-//   host: '172.19.152.27',
-//   user: 'onsdb_jo',
-//   password: 'Onsdb123$',
-//   database: 'special'
+//   host: process.env.SPECIAL_HOST, // 수정됨
+//   user: process.env.SPECIAL_USER, // 수정됨
+//   password: process.env.SPECIAL_PASSWORD, // 수정됨
+//   database: process.env.SPECIAL_DB_NAME // 수정됨
 // }) 
