@@ -3,8 +3,8 @@ import { db } from "../db.js";
 //Solution 등록하기
 export const register = (req, res) => {
   const { sol_name, sol_full_name, kor_name, n_id, url, github_url, work_field, date, reg_date, imgUrl } = req.body;
-  // const q = "SELECT * FROM solutiondata WHERE sol_name = ?"
-  const q = "SELECT * FROM TB_itasset_solutiondata WHERE sol_name = ?"
+  const q = "SELECT * FROM special.ITAsset_solutiondata WHERE sol_name = ?"
+  // const q = "SELECT * FROM TB_itasset_solutiondata WHERE sol_name = ?"
 
   db.query(q, [sol_name], (err, data) => {
     if (err) return res.status(500).json(err);
@@ -12,7 +12,7 @@ export const register = (req, res) => {
 
     // const insertQuery = "INSERT INTO solutiondata (`sol_name`, `sol_full_name`, `kor_name`,`n_id`, `url`, `github_url`,`work_field`, date,`reg_date`, `img`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     const insertQuery = `
-    INSERT INTO TB_itasset_solutiondata 
+    INSERT INTO special.ITAsset_solutiondata
     (
       sol_name, 
       sol_full_name, 
@@ -66,8 +66,8 @@ export const getsolution = (req, res) => {
       s.reg_date, 
       CONCAT('/', SUBSTRING_INDEX(img, '/', -3)) AS img 
     FROM 
-      special.TB_itasset_solutiondata s 
-      LEFT JOIN special.users u ON s.n_id = u.n_id
+      special.ITAsset_solutiondata s 
+      LEFT JOIN special.ITAsset_users u ON s.n_id = u.n_id
   `;
 
   db.query(q, (req.query), (err, data) => {
@@ -94,8 +94,8 @@ export const getWorkfld = (req, res) => {
       s.work_field,
       CONCAT('/', SUBSTRING_INDEX(img, '/', -3)) AS img 
     FROM 
-      special.TB_itasset_solutiondata s 
-      LEFT JOIN special.users u ON s.n_id = u.n_id
+      special.ITAsset_solutiondata s 
+      LEFT JOIN special.ITAsset_users u ON s.n_id = u.n_id
   `;
   let queryParams = [];
 
@@ -131,8 +131,8 @@ export const getproduct = (req, res) => {
       s.effect,
       CONCAT('/', SUBSTRING_INDEX(img, '/', -3)) AS img 
     FROM 
-      special.TB_itasset_solutiondata s 
-      LEFT JOIN special.users u ON s.n_id = u.n_id 
+      special.ITAsset_solutiondata s 
+      LEFT JOIN special.ITAsset_users u ON s.n_id = u.n_id 
     WHERE 
       s.id = ?
   `;
@@ -148,7 +148,7 @@ export const getproduct = (req, res) => {
 export const updateSolDesc = (req, res) => {
   const postId = req.params.id;
   const q = `
-    UPDATE special.TB_itasset_solutiondata
+    UPDATE special.ITAsset_solutiondata
     SET 
       direc = ?,
       target = ?,
