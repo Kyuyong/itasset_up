@@ -36,7 +36,7 @@ const loginOpark = (username, password) => {
     };
 
     const req = http.request(options, (res) => {
-      console.log(`STATUS: ${res.statusCode}`);
+      // console.log(`STATUS: ${res.statusCode}`);
       let data = '';
 
 
@@ -56,7 +56,7 @@ const loginOpark = (username, password) => {
 
           // 로그인 인증 성공 여부 확인
           if (authUserValue === "Y") {
-            console.log("로그인 인증 성공");
+            // console.log("로그인 인증 성공");
             // 성공적인 인증 처리, 예를 들어 사용자 정보를 resolve로 전달
             resolve({ success: true, message: "로그인 성공", authUserValue: authUserValue, keyValuePairs: keyValuePairs });
           } else {

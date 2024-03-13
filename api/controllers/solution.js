@@ -126,6 +126,9 @@ export const getproduct = (req, res) => {
       s.github_url, 
       s.work_field, 
       s.reg_date, 
+      s.direc,
+      s.target,
+      s.effect,
       CONCAT('/', SUBSTRING_INDEX(img, '/', -3)) AS img 
     FROM 
       special.TB_itasset_solutiondata s 
@@ -141,14 +144,21 @@ export const getproduct = (req, res) => {
 
 
 
-// Solutions 세부내역 입력하기
+// Solutions - Update 세부내역 입력하기
 export const updateSolDesc = (req, res) => {
   const postId = req.params.id;
-  const q = ``;
-  const values = [req.body.sol_name, req.body.direc, req.body.target, req.body.effect];
-  db.query(q, [...values, postId, userInfo.id], (err, data) => {
+  const q = `
+    UPDATE special.TB_itasset_solutiondata
+    SET 
+      direc = ?,
+      target = ?,
+      effect = ?
+    WHERE 
+      id = ?`;
+  const values = [req.body.direc, req.body.target, req.body.effect, postId];
+  db.query(q, values, (err, data) => {
     if (err) return res.status(500).json(err);
-    return res.json("Post has been updated.");
+    return res.json("Solution을 업데이트 하였습니다.");
   });
 };
 

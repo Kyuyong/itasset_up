@@ -8,7 +8,7 @@ router.post("/register", register);
 router.get("/getsolution", getsolution);
 router.get("/getWorkfld", getWorkfld);
 router.get("/getsolution/:id", getproduct);
-router.put("/getsolution/:id", updateSolDesc);
+router.put("/update/:id", updateSolDesc);
 router.post("/upload", fileupload);
 
 export default router;

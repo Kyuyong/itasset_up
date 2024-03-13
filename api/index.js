@@ -1,6 +1,5 @@
 import express from "express";
 import solutionRoutes from "./routes/solutions.js";
-import authRoutes from "./routes/auths.js";
 import multer from "multer";
 import { loginOpark } from './opark.js';
 import cookieParser from "cookie-parser";
@@ -11,7 +10,7 @@ app.use(express.json());
 app.use(cookieParser())
 
 ////////////////////////
-// FileUpload.jsx 파일 업로드 로직 
+// 이미지 파일 업로드 로직 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "../client/public/upload/solutions");
@@ -51,7 +50,7 @@ app.post('/api/login', async (req, res) => {
 
 
 app.use("/api/solutions", solutionRoutes);
-app.use("/api/auths", authRoutes);
+
 
 app.listen(8800, () => {
   console.log("API 8800 Port 접속완료!")
