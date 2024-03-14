@@ -55,3 +55,7 @@ app.use("/api/solutions", solutionRoutes);
 app.listen(8800, () => {
   console.log("API 8800 Port 접속완료!")
 });
+
+app.get('/api/someEndpoint', (req, res) => {
+  res.send('This is a response from someEndpoint');
+});
