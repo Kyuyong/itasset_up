@@ -163,6 +163,8 @@ export const updateSolDesc = (req, res) => {
 };
 
 
+
+
 // FileUpload.jsx 파일 업로드 로직 
 export const fileupload = (req, res) => {
   const sql = 'INSERT INTO file (`file`,`date`) VALUES (?,?)';
