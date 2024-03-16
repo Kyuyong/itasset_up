@@ -37,7 +37,7 @@ export const register = (req, res) => {
       work_field,
       date,
       reg_date,
-      imgUrl // 업로드된 파일의 경로를 데이터베이스에 저장
+      imgUrl.filePath
     ];
 
     db.query(insertQuery, values, (err, data) => {
@@ -165,10 +165,13 @@ export const updateSolDesc = (req, res) => {
 
 
 
-// FileUpload.jsx 파일 업로드 로직 
+// FileUpload.jsx 파일 업로드 로직  [req.body.imgUrl, req.body.date]
 export const fileupload = (req, res) => {
-  const sql = 'INSERT INTO file (`file`,`date`) VALUES (?,?)';
-  db.query(sql, [req.body.imgUrl, req.body.date], (err, result) => {
+  // const sql = 'INSERT INTO special.ITAsset_filetest (`file`,`date`) VALUES (?,?)';
+  const { filePath, date } = req.body;
+  console.log("DB로 응답받은 내용: ", req.body)
+  const sql = "INSERT INTO special.ITAsset_filetest (`file`,`date`) VALUES (?,?)";
+  db.query(sql, [filePath, date], (err, result) => {
     if (err) {
       console.error(err);
       return res.status(500).send('Error saving file path to database');

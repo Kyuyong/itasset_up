@@ -44,7 +44,7 @@ app.post("/api/upload", upload.single("file"), function (req, res) {
     console.log("file path: ", filePath);
     console.log("file name: ", fileName);
     // filePath를 포함하는 응답을 클라이언트로 보냄
-    res.status(200).json({ filePath, fileName });
+    res.status(200).json({ filePath });
   } catch (error) {
     // 기타 서버 내부 오류 처리
     console.error("파일 업로드 중 오류 발생:", error);
