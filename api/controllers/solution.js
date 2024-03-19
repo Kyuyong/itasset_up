@@ -37,7 +37,7 @@ export const register = (req, res) => {
       work_field,
       date,
       reg_date,
-      imgUrl.filePath
+      imgUrl.filePath //imgUrl.filePath 단독으로 저장할때는 이걸로 써야함
     ];
 
     db.query(insertQuery, values, (err, data) => {
