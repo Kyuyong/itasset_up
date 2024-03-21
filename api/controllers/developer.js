@@ -28,10 +28,46 @@ export const registerDev = (req, res) => {
   });
 };
 
+// 개발자 이미지 바꾸기 
+export const updateDevImg = (req, res) => {
+  console.log("개발자 이미지 req.body : ", req.body);
+  const q = `
+  UPDATE special.ITAsset_developer
+  SET dev_img = ?
+  WHERE n_id = ?
+  `;
+  const values = [req.body.dev_img, req.body.n_id];
+  db.query(q, values, (err, data) => {
+    if (err) return res.status(500).json(err);
+    return res.json("개발자 이미지을 업데이트 하였습니다.");
+  })
+}
+
+// 개발자 소개글 바꾸기 
+export const updateDevIntro = (req, res) => {
+  console.log("개발자 소개글 req.body : ", req.body);
+  const q = `
+  UPDATE special.ITAsset_developer
+  SET introduction = ?
+  WHERE n_id = ?;
+  `;
+  const values = [req.body.introduction, req.body.n_id];
+  db.query(q, values, (err, data) => {
+    if (err) return res.status(500).json(err);
+    return res.json("개발자 소개글을 업데이트 하였습니다.");
+  })
+}
+
+// 개발자 목록 가져오기 
 export const getDeveloper = (req, res) => {
   const q = `
-    SELECT *
-    FROM special.ITAsset_developer
+    SELECT 
+      s.id AS id, s.n_id, u.name, 
+      u.team, u.headquarters, s.introduction, 
+      CONCAT('/', SUBSTRING_INDEX(s.dev_img, '/', -3)) AS dev_img
+    FROM special.ITAsset_developer s
+    LEFT JOIN special.ITAsset_users u
+    ON s.n_id = u.n_id;
   `;
 
   db.query(q, (err, data) => {
@@ -40,7 +76,7 @@ export const getDeveloper = (req, res) => {
   })
 };
 
-
+// 구성원 목록 가져오기
 export const getUser = (req, res) => {
   const q = `SELECT * FROM special.ITAsset_users`;
   db.query(q, (err, data) => {
@@ -49,9 +85,7 @@ export const getUser = (req, res) => {
   })
 };
 
-// adminreg
-// getadmin
-
+// Admin 계정 등록하기 
 export const AdminReg = (req, res) => {
   console.log("백엔드 req.body 받은 내용: ", req.body);
   const { n_id } = req.body;
@@ -72,16 +106,18 @@ export const AdminReg = (req, res) => {
   });
 };
 
+
+// Admin 계정 가져오기 
 export const getAdmin = (req, res) => {
   const q = `
-  SELECT 
-	  s.n_id,
-    u.name,
-	  u.headquarters,
-	  u.team
-  FROM special.ITAsset_admin s 
-  LEFT JOIN special.ITAsset_users u
-  ON s.n_id = u.n_id;
+    SELECT 
+      s.n_id,
+      u.name,
+      u.headquarters,
+      u.team
+    FROM special.ITAsset_admin s 
+    LEFT JOIN special.ITAsset_users u
+    ON s.n_id = u.n_id;
   `;
 
   db.query(q, (err, data) => {

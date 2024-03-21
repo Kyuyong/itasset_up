@@ -64,7 +64,9 @@ export const getsolution = (req, res) => {
       s.github_url, 
       s.work_field, 
       s.reg_date, 
-      CONCAT('/', SUBSTRING_INDEX(img, '/', -3)) AS img 
+      CONCAT('/', SUBSTRING_INDEX(img, '/', -3)) AS img,
+      s.version,
+      s.reupdate
     FROM 
       special.ITAsset_solutiondata s 
       LEFT JOIN special.ITAsset_users u ON s.n_id = u.n_id
@@ -112,6 +114,7 @@ export const getWorkfld = (req, res) => {
 
 //Product 불러오기
 export const getproduct = (req, res) => {
+  // console.log("getproduct : ", req.params.id)
   const q = `
     SELECT 
       s.id AS id, 
@@ -129,7 +132,9 @@ export const getproduct = (req, res) => {
       s.direc,
       s.target,
       s.effect,
-      CONCAT('/', SUBSTRING_INDEX(img, '/', -3)) AS img 
+      CONCAT('/', SUBSTRING_INDEX(img, '/', -3)) AS img,
+      s.version,
+      s.reupdate
     FROM 
       special.ITAsset_solutiondata s 
       LEFT JOIN special.ITAsset_users u ON s.n_id = u.n_id 
@@ -137,7 +142,11 @@ export const getproduct = (req, res) => {
       s.id = ?
   `;
   db.query(q, [req.params.id], (err, data) => {
-    if (err) return res.status(500).json(err);
+    if (err) {
+      return res.status(500).json(err)
+    }
+
+    // console.log("getproduct data : ", data);
     return res.status(200).json(data);
   });
 }
@@ -162,7 +171,25 @@ export const updateSolDesc = (req, res) => {
   });
 };
 
-
+// Solutions - 부가 내용 수정하기 
+export const updateSoletc = (req, res) => {
+  // console.log("solution 부가내용수정 req.body : ", req.body);
+  const postId = req.params.id;
+  const q = `
+  UPDATE special.ITAsset_solutiondata
+  SET 
+    version = ?,
+    reupdate = ?,
+    reg_date = ?
+  WHERE 
+    id = ?
+  `;
+  const values = [req.body.version, req.body.reupdate, req.body.reg_date, postId];
+  db.query(q, values, (err, data) => {
+    if (err) return res.status(500).json(err);
+    return res.json("Solution 부가내용을 업데이트 하였습니다.");
+  })
+}
 
 
 // FileUpload.jsx 파일 업로드 로직  [req.body.imgUrl, req.body.date]
