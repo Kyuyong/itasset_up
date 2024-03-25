@@ -173,18 +173,27 @@ export const updateSolDesc = (req, res) => {
 
 // Solutions - 부가 내용 수정하기 
 export const updateSoletc = (req, res) => {
-  // console.log("solution 부가내용수정 req.body : ", req.body);
+  console.log("solution 부가내용수정 req.body : ", req.body);
   const postId = req.params.id;
   const q = `
   UPDATE special.ITAsset_solutiondata
   SET 
+    sol_name = ?,
+    sol_full_name = ?,
+    kor_name = ?,
+    work_field = ?,
+    url = ? ,
+    github_url = ?,
     version = ?,
     reupdate = ?,
     reg_date = ?
   WHERE 
     id = ?
   `;
-  const values = [req.body.version, req.body.reupdate, req.body.reg_date, postId];
+  const values = [
+    req.body.sol_name, req.body.sol_full_name, req.body.kor_name, req.body.work_field,
+    req.body.url, req.body.github_url,
+    req.body.version, req.body.reupdate, req.body.reg_date, postId];
   db.query(q, values, (err, data) => {
     if (err) return res.status(500).json(err);
     return res.json("Solution 부가내용을 업데이트 하였습니다.");
