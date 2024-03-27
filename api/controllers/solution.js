@@ -66,7 +66,8 @@ export const getsolution = (req, res) => {
       s.reg_date, 
       CONCAT('/', SUBSTRING_INDEX(img, '/', -3)) AS img,
       s.version,
-      s.reupdate
+      s.reupdate, 
+      s.likeCnt
     FROM 
       special.ITAsset_solutiondata s 
       LEFT JOIN special.ITAsset_users u ON s.n_id = u.n_id
@@ -200,6 +201,42 @@ export const updateSoletc = (req, res) => {
   })
 }
 
+// 좋아요 수 가져오기 
+export const getLikes = (req, res) => {
+  const id = req.params.id;
+  const q = "SELECT likeCnt FROM special.ITAsset_solutiondata WHERE id = ?";
+  db.query(q, [id], (err, result) => {
+    if (err) {
+      console.error("좋아요 수 조회 중 오류 발생: ", err);
+      return res.status(500).json({ error: "서버 오류" });
+    }
+    // 조회 성공
+    if (result.length > 0) {
+      res.json({ likeCnt: result[0].likeCnt });
+    } else {
+      res.status(404).json({ message: "Solution을 찾을 수 없습니다." });
+    }
+  });
+};
+
+
+// 좋아요 업데이트 하기 
+export const likes = (req, res) => {
+  // console.log("likes 들어온 req.params", req.params);
+  // console.log("likes 들어온 req.body", req.body);
+  const id = req.params.id;
+  const likeCnt = req.body.likeCount;
+  // console.log("likeCnt 값은? ", likeCnt);
+
+  const q = "UPDATE special.ITAsset_solutiondata SET  likeCnt = ? WHERE  id =? ";
+  db.query(q, [likeCnt, id], (err, result) => {
+    if (err) {
+      console.error("쿼리 실행 에러:", err);
+      return res.status(500).json({ error: err.message });
+    }
+    return res.json({ message: "좋아요 수 업데이트 성공", likeCnt });
+  });
+}
 
 // FileUpload.jsx 파일 업로드 로직  [req.body.imgUrl, req.body.date]
 export const fileupload = (req, res) => {
